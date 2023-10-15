@@ -1,0 +1,123 @@
+namespace GörselProgProjem
+{
+    public partial class Form1 : Form
+    {
+        Image[] resimler =
+        {
+            Properties.Resources.elif,
+            Properties.Resources.be,
+            Properties.Resources.te,
+            Properties.Resources.se,
+            Properties.Resources.cim__2_,
+            Properties.Resources.ha,
+            Properties.Resources.haa,
+            Properties.Resources.dal,
+            Properties.Resources.zel,
+            Properties.Resources.ra,
+            Properties.Resources.ze,
+            
+
+        };
+        int[] indeksler = { 0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10 };
+
+        PictureBox ilkkutu;
+        int ilkIndeks, bulunan, deneme;
+        public Form1()
+        {
+            InitializeComponent();
+        }
+        int süre = 0;
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            resimlerikaristir();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            timer1.Start();
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            süre++;
+            label2.Text = süre.ToString();
+            if (bulunan == 11)
+            {
+                timer1.Stop();
+                süre = 0;
+            }
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void resimlerikaristir()
+        {
+            Random rnd = new Random();
+
+            for (int i = 0; i< 22; i++)
+            {
+                int sayi = rnd.Next(22);
+
+                int gecici = indeksler[i];
+                indeksler[i] = indeksler[sayi];
+                indeksler[sayi] = gecici;
+                
+            }
+
+        }
+
+        private void pictureBox1_Click(object sender, EventArgs e)
+        {
+            PictureBox kutu = (PictureBox)sender;
+            int kutuno = int.Parse(kutu.Name.Substring(10));
+            int indeksNo = indeksler[kutuno -1];
+            kutu.Image =  resimler[indeksNo];
+            kutu.Refresh();
+
+            if (ilkkutu == null)
+            {
+                ilkkutu = kutu;
+                ilkIndeks = indeksNo;
+                deneme++;
+            }
+            else
+            {
+                System.Threading.Thread.Sleep(1000);
+
+                ilkkutu.Image = null;
+                kutu.Image = null;
+                if (ilkIndeks == indeksNo)
+                {
+                    bulunan++;
+                    ilkkutu.Visible = false;
+                    kutu.Visible = false;
+
+                    if (bulunan == 11)
+                    {
+                      MessageBox.Show("Tebrikler " + deneme + " Deneme ve  "  +  süre + " saniyede Buldunuz");
+                      bulunan = 0;
+                      deneme = 0;
+                      foreach (Control kontrol in Controls)
+                        {
+                            kontrol.Visible = true;
+                        }
+                      resimlerikaristir();
+                    }
+                }
+                ilkkutu = null;
+            }
+        }
+
+        
+
+        
+    }
+}
